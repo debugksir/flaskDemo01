@@ -1,5 +1,6 @@
 DIALECT = 'mysql'
-DRIVER = 'mysqlclient'
+# DRIVER = 'pymysql'
+DRIVER = 'mysqldb'
 USERNAME = 'root'
 PASSWORD = '123'
 HOST = '127.0.0.1'

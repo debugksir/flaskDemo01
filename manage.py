@@ -4,7 +4,7 @@ from flask_script import Manager
 from hello import app
 from exts import db
 from flask_migrate import Migrate, MigrateCommand
-from models import Article, User
+from models import Article, User, Tag
 
 # from db_scripts import DBmanager
 # manager.add_command('db', DBmanager)
@@ -24,7 +24,7 @@ manager.add_command('db', MigrateCommand)
 # 注：若使用python3执行该任务报错`python3.5/dist-packages/MySQLdb/connections.py", line 36 raise errorclass, errorvalue`，原因是`python3`不再支持mysqldb驱动，可以使用mysqlclient替代，`sudo python3 -m pip install mysqlclient`
 
 @manager.command
-def runserver():
+def run():
     print('服务器跑起来了')
     app.run(debug=True)
 

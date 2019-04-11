@@ -2,7 +2,7 @@
 from flask import Flask
 from exts import db
 import config
-from models import Article, User
+from models import Article, User, Tag
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -65,10 +65,9 @@ def add_article():
 @app.route('/find_user')
 def find_user():
     article_id = 2
-    article_author = Article.query.filter(Article.id == article_id).first().author
+    article_author = Article.query.filter(Article.id == article_id).first().user
     print(article_author.username)
-    print(article_author.article[1].title)
-    print(Article.query.filter(Article.id == article_id).first().user)
+    print(article_author.articles[1].title)
     return article_author.username
 
 # 通过作者id去查找作者的所有文章
@@ -76,9 +75,27 @@ def find_user():
 def find_article():
     user_id = 1
     user_article = User.query.filter(User.id == user_id).first()
-    print(user_article.article[0].title)
-    print(user_article.articles[0].title)
-    return user_article.article[0].title
+    return user_article.articles[0].title
+
+# 给文章存储标签
+@app.route('/add_tag')
+def add_tag():
+    article_id = 1
+    article = Article.query.filter(Article.id == article_id).first()
+    tag = Tag.query.filter(Tag.name == 'a').first()
+    article.tags.append(tag)
+    db.session.commit()
+    return 'ok'
+
+# 获取标签为’b'的所有文章
+@app.route('/get_articles')
+def get_articles():
+    tag = 'c'
+    articles = Tag.query.filter(Tag.name == tag).first().articles
+    titles = ''
+    for item in articles:
+        titles = titles + item.title + ' | '
+    return titles
 
 if __name__ == '__main__':
     app.run(debug=True)
